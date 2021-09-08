@@ -7,16 +7,21 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CompanhiaAguasWebMVC.Data;
 using CompanhiaAguasWebMVC.Data.Entities;
+using CompanhiaAguasWebMVC.Helpers;
 
 namespace CompanhiaAguasWebMVC.Controllers
 {
     public class ClientsController : Controller
     {
         private readonly IClientRepository _clientRepository;
+        private readonly IUserHelper _userHelper;
 
-        public ClientsController(IClientRepository clientRepository)
+        public ClientsController(
+            IClientRepository clientRepository,
+            IUserHelper userHelper)
         {
             _clientRepository = clientRepository;
+            _userHelper = userHelper;
         }
 
         // GET: Clients
@@ -57,6 +62,8 @@ namespace CompanhiaAguasWebMVC.Controllers
         {
             if (ModelState.IsValid)
             {
+                //TODO: MODIFICAR PARA O USER QUE TIVER LOGADO
+                client.User = await _userHelper.GetUserByEmailAsync("luisandresalgueiro@gmail.com");
                 await _clientRepository.CreateAsync(client);
                
                 return RedirectToAction(nameof(Index));
@@ -96,6 +103,10 @@ namespace CompanhiaAguasWebMVC.Controllers
             {
                 try
                 {
+                    //TODO: MODIFICAR PARA O USER QUE TIVER LOGADO
+
+                    client.User = await _userHelper.GetUserByEmailAsync("luisandresalgueiro@gmail.com");
+
                     await _clientRepository.UpdateAsync(client);
                 }
                 catch (DbUpdateConcurrencyException)

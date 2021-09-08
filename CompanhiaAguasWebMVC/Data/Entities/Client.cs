@@ -45,5 +45,8 @@ namespace CompanhiaAguasWebMVC.Data.Entities
         [Required]
         [EmailAddress]
         public string Email { get; set; }
+
+
+        public User User { get; set; }
     }
 }
