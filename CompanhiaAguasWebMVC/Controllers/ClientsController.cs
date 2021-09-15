@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using CompanhiaAguasWebMVC.Data;
+﻿using CompanhiaAguasWebMVC.Data;
 using CompanhiaAguasWebMVC.Data.Entities;
 using CompanhiaAguasWebMVC.Helpers;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace CompanhiaAguasWebMVC.Controllers
 {
+    [Authorize]
     public class ClientsController : Controller
     {
         private readonly IClientRepository _clientRepository;
@@ -65,7 +63,7 @@ namespace CompanhiaAguasWebMVC.Controllers
                 //TODO: MODIFICAR PARA O USER QUE TIVER LOGADO
                 client.User = await _userHelper.GetUserByEmailAsync("luisandresalgueiro@gmail.com");
                 await _clientRepository.CreateAsync(client);
-               
+
                 return RedirectToAction(nameof(Index));
             }
             return View(client);
@@ -111,7 +109,7 @@ namespace CompanhiaAguasWebMVC.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (! await _clientRepository.ExistAsync(client.Id))
+                    if (!await _clientRepository.ExistAsync(client.Id))
                     {
                         return NotFound();
                     }
@@ -150,6 +148,12 @@ namespace CompanhiaAguasWebMVC.Controllers
             var client = await _clientRepository.GetByIdAsync(id);
             await _clientRepository.DeleteAsync(client);
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public IActionResult GetClients()
+        {
+            return Ok(_clientRepository.GetAllWithUsers());
         }
 
     }
