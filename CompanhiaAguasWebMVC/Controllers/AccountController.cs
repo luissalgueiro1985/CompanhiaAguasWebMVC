@@ -1,5 +1,7 @@
-﻿using CompanhiaAguasWebMVC.Helpers;
+﻿using CompanhiaAguasWebMVC.Data.Entities;
+using CompanhiaAguasWebMVC.Helpers;
 using CompanhiaAguasWebMVC.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -51,6 +53,80 @@ namespace CompanhiaAguasWebMVC.Controllers
         {
             await _userHelper.LogoutAsync();
             return RedirectToAction("Index", "Home");
+        }
+
+
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterNewUserViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userHelper.GetUserByEmailAsync(model.Username);
+                if (user == null)
+                {
+                    /*var city = await _countryRepository.GetCityAsync(model.CityId);*/
+
+                    user = new User
+                    {
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        Email = model.Username,
+                        UserName = model.Username,
+                        
+
+                    };
+
+                    var result = await _userHelper.AddUserAsync(user, model.Password);
+                    if (result != IdentityResult.Success)
+                    {
+                        ModelState.AddModelError(string.Empty, "The user couldn´t be created.");
+                        return View(model);
+                    }
+
+                    var loginViewModel = new LoginViewModel
+                    {
+                        Password = model.Password,
+                        RememberMe = false,
+                        Username = model.Username
+                    };
+
+                    var result2 = await _userHelper.LoginAsync(loginViewModel);
+                    if (result2.Succeeded)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                        
+
+
+                    /*string myToken = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+                    string tokenLink = Url.Action("ConfirmEmail", "Account", new
+                    {
+                        userid = user.Id,
+                        token = myToken
+                    }, protocol: HttpContext.Request.Scheme);
+
+                    Response response = _mailHelper.SendEmail(model.Username, "Email confirmation", $"<h1>Email Confirmation</h1>" +
+                        $"To allow the user, " +
+                        $"please click in this link:</br></br><a href = \"{tokenLink}\">Confirm Email</a>");
+
+                    if (response.IsSuccess)
+                    {
+                        ViewBag.Message = "The instructions to allow you user has been sent to email";
+                        return View(model);
+                    }*/
+
+                    ModelState.AddModelError(string.Empty, "The user couldn´t be logged.");
+                }
+
+            }
+            return View(model);
+
         }
     }
 }

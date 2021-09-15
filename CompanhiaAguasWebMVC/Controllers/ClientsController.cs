@@ -60,8 +60,7 @@ namespace CompanhiaAguasWebMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                //TODO: MODIFICAR PARA O USER QUE TIVER LOGADO
-                client.User = await _userHelper.GetUserByEmailAsync("luisandresalgueiro@gmail.com");
+                client.User = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
                 await _clientRepository.CreateAsync(client);
 
                 return RedirectToAction(nameof(Index));
@@ -101,9 +100,7 @@ namespace CompanhiaAguasWebMVC.Controllers
             {
                 try
                 {
-                    //TODO: MODIFICAR PARA O USER QUE TIVER LOGADO
-
-                    client.User = await _userHelper.GetUserByEmailAsync("luisandresalgueiro@gmail.com");
+                    client.User = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
 
                     await _clientRepository.UpdateAsync(client);
                 }
