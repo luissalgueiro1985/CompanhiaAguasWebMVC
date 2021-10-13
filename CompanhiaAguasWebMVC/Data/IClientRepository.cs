@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CompanhiaAguasWebMVC.Data
 {
@@ -10,6 +11,8 @@ namespace CompanhiaAguasWebMVC.Data
         public IQueryable GetAllWithUsers();
 
         IEnumerable<SelectListItem> GetComboClients();
+
+        Task<Client> GetClientByEmail(string email);
 
     }
 }

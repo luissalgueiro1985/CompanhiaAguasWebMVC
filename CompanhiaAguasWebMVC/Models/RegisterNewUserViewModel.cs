@@ -29,7 +29,7 @@ namespace CompanhiaAguasWebMVC.Models
 
 
         [Display(Name = "Role Name")]
-        public int RoleName { get; set; }
+        public string RoleName { get; set; }
 
         public IEnumerable<SelectListItem> Roles { get; set; }
 

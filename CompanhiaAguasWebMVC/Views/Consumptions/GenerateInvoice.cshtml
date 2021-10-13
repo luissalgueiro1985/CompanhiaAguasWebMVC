@@ -6,6 +6,9 @@
 
 <h1>Tem a certeza que pretende gerar a fatura deste consumo?</h1>
 
+
+
+
 <h4>Consumo</h4>
 <hr />
 <div class="row">
@@ -43,9 +46,15 @@
 
             </div>
         </form>
+        
     </div>
 </div>
 
+<div style="text-align:center; font-size:x-large" class="text-danger">
+    <p>
+        @TempData["Message"]
+    </p>
+</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

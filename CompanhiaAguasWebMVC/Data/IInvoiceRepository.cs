@@ -12,6 +12,9 @@ namespace CompanhiaAguasWebMVC.Data
 
         public IQueryable GetAllInvoicesAsync();
 
+        public IQueryable GetAllByClient(int id);
         Task<Invoice> GetLastInvoice();
+
+        Task<bool> ExistInvoiceConsumptionAsync(int id);
     }
 }

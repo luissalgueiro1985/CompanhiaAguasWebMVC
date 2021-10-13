@@ -10,5 +10,8 @@ namespace CompanhiaAguasWebMVC.Data
     {
 
         public IQueryable GetAllWithUsers();
+
+        public IQueryable GetAllByClient(int id);
+
     }
 }

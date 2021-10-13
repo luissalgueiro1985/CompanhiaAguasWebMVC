@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CompanhiaAguasWebMVC.Controllers
 {
-    [Authorize(Roles = "Admin,Employee")]
+    
     public class InvoicesController : Controller
     {
         private readonly IInvoiceRepository _invoiceRepository;
@@ -96,6 +96,14 @@ namespace CompanhiaAguasWebMVC.Controllers
         public IActionResult InvoiceNotFound()
         {
             return View();
+        }
+
+        [Authorize(Roles = "Customer")]
+        public async Task<IActionResult> InvoicesCustomer()
+        {
+            Client client = await _clientRepository.GetClientByEmail(this.User.Identity.Name);
+
+            return View(_invoiceRepository.GetAllByClient(client.Id));
         }
     }
 }

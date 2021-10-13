@@ -14,6 +14,16 @@ namespace CompanhiaAguasWebMVC.Data
             _context = context;
         }
 
+        public IQueryable GetAllByClient(int id)
+        {
+            return _context.Invoices
+                .Include(i => i.User)
+                .Include(i => i.Client)
+                .Include(i => i.Consumption)
+                .Where(c => c.Client.Id == id);
+                
+        }
+
         public IQueryable GetAllInvoicesAsync()
         {
              
@@ -37,6 +47,13 @@ namespace CompanhiaAguasWebMVC.Data
                 .Where(i => i.IsPaid == false)
                 .OrderByDescending(i => i.Id)
                 .FirstOrDefaultAsync();
+                
+        }
+
+        public async Task<bool> ExistInvoiceConsumptionAsync(int id)
+        {
+            return await _context.Invoices
+                .AnyAsync(i => i.Consumption.Id == id);
                 
         }
     }

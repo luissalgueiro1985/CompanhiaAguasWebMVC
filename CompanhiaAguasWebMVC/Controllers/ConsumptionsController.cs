@@ -267,6 +267,14 @@ namespace CompanhiaAguasWebMVC.Controllers
 
             }
 
+            bool existThisInvoice = await _invoiceRepository.ExistInvoiceConsumptionAsync(consumption.Id);
+
+            if (existThisInvoice)
+            {
+                TempData["Message"] = "Já existe uma fatura para este consumo!!!";
+                return View();
+            }
+
             if (ModelState.IsValid)
             {
                 try
@@ -317,6 +325,80 @@ namespace CompanhiaAguasWebMVC.Controllers
             return View();
         }
 
+        // GET: Clients/Create
+        [Authorize(Roles = "Customer")]
+        public async Task<IActionResult> CreateByCustomer()
+        {
+            var user = this.User.Identity.Name;
+
+
+            Client client = await _clientRepository.GetClientByEmail(this.User.Identity.Name);
+
+
+
+            var model = new Consumption
+            {
+                ClientId = client.Id
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateByCustomer(Consumption consumption)
+        {
+            if (ModelState.IsValid)
+            {
+                consumption.User = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
+
+                /*var client = await _clientRepository.GetByIdAsync(Convert.ToInt32(createNewConsumptionViewModel.ClientId));*/
+
+
+
+                int consQuantity = consumption.Quantity;
+
+                if (consQuantity <= 5)
+                {
+                    consumption.TotalToBill = (decimal)(consQuantity * 0.3);
+                }
+                else if (consQuantity <= 15)
+                {
+                    consumption.TotalToBill = (decimal)(5 * 0.3 + (consQuantity - 5) * 0.8);
+                }
+                else if (consQuantity <= 25)
+                {
+                    consumption.TotalToBill = (decimal)(5 * 0.3 + 10 * 0.8 + (consQuantity - 15) * 1.2);
+                }
+                else
+                {
+                    consumption.TotalToBill = (decimal)(5 * 0.3 + 10 * 0.8 + 10 * 1.2 + (consQuantity - 25) * 1.6);
+                }
+
+
+                /*Consumption consumption = new Consumption
+                {
+                    Client = client,
+                    DateTime = createNewConsumptionViewModel.DateTime,
+                    Quantity = createNewConsumptionViewModel.Quantity,
+                    TotalToBill = createNewConsumptionViewModel.TotalToBill,
+                    User = createNewConsumptionViewModel.User
+                };*/
+
+                await _consumptionRepository.CreateAsync(consumption);
+
+                return RedirectToAction(nameof(ConsumptionsClient));
+            }
+            return View(consumption);
+        }
+
+        public async Task<IActionResult> ConsumptionsClient()
+        {
+            Client client = await _clientRepository.GetClientByEmail(this.User.Identity.Name);
+
+
+            return View(_consumptionRepository.GetAllByClient(client.Id));
+        }
     }
 
 }

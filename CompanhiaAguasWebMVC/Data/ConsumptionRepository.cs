@@ -13,6 +13,10 @@ namespace CompanhiaAguasWebMVC.Data
             _context = context;
         }
 
+        public IQueryable GetAllByClient(int id)
+        {
+            return _context.Consumptions.Where(c => c.ClientId == id);
+        }
 
         public IQueryable GetAllWithUsers()
         {

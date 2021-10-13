@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CompanhiaAguasWebMVC.Data
 {
@@ -18,6 +19,11 @@ namespace CompanhiaAguasWebMVC.Data
         public IQueryable GetAllWithUsers()
         {
             return _context.Clients.Include(p => p.User);
+        }
+
+        public async Task<Client> GetClientByEmail(string email)
+        {
+            return await _context.Clients.Where(c => c.Email == email).FirstOrDefaultAsync();
         }
 
         public IEnumerable<SelectListItem> GetComboClients()

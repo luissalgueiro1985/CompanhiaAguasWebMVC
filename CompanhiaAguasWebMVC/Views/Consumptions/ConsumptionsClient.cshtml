@@ -7,8 +7,10 @@
 
 
 <p>
-    <a asp-action="Create" class="btn btn-primary">Adicionar novo consumo</a>
+    <a asp-action="CreateByCustomer" class="btn btn-primary">Adicionar novo consumo</a>
 </p>
+
+
 
 
 <div class="row">
@@ -34,7 +36,7 @@
                                 @Html.DisplayNameFor(model => model.TotalToBill)
                             </th>
 
-                            <th>Actions</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -54,12 +56,12 @@
                                     @Html.DisplayFor(modelItem => item.TotalToBill)
                                 </td>
 
-                                <td style="display: grid; grid-auto-flow: column; grid-column-gap: 10px">
+                                @*<td style="display: grid; grid-auto-flow: column; grid-column-gap: 10px">
                                     <a asp-action="Edit" asp-route-id="@item.Id" style="width: 100px; margin: 0px" class="btn btn-warning"><i class="far fa-edit"></i> Editar</a>
                                     <a asp-action="Delete" asp-route-id="@item.Id" style="width: 100px; margin: 0px" class="btn btn-danger"><i class="far fa-trash-alt"></i> Apagar</a>
                                     <a asp-action="GenerateInvoice" asp-route-id="@item.Id" style="width:150px;margin:0px" class="btn btn-primary"><i class="fas fa-file-invoice"></i> Gerar fatura</a>
 
-                                </td>
+                                </td>*@
                             </tr>
                         }
                     </tbody>

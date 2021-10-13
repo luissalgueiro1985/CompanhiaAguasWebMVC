@@ -50,37 +50,35 @@
                     <tbody>
                         @foreach (var item in Model)
                         {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Id)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Client.FullName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Consumption.Quantity)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.DateTime)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.SubTotal)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Tax)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Total)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.IsPaid)
-                            </td>
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Client.FullName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Consumption.Quantity)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DateTime)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SubTotal)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Tax)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Total)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.IsPaid)
+                                </td>
 
 
-                            <td>
-                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="far fa-edit"></i> Editar pagamento</a>
-                            </td>
-                        </tr>
+                                
+                            </tr>
                         }
                     </tbody>
                 </table>
@@ -90,11 +88,10 @@
 </div>
 
 @section Scripts{
-    
+
     <script type="text/javascript">
         $(document).ready(function () {
             $('#MyTable').DataTable();
         });
     </script>
 }
-

@@ -1,4 +1,5 @@
-﻿using CompanhiaAguasWebMVC.Data.Entities;
+﻿using CompanhiaAguasWebMVC.Data;
+using CompanhiaAguasWebMVC.Data.Entities;
 using CompanhiaAguasWebMVC.Helpers;
 using CompanhiaAguasWebMVC.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -16,12 +17,16 @@ namespace CompanhiaAguasWebMVC.Controllers
     {
         private readonly IUserHelper _userHelper;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IClientRepository _clientRepository;
+
 
         public AccountController(IUserHelper userHelper,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            IClientRepository clientRepository)
         {
             _userHelper = userHelper;
             _roleManager = roleManager;
+            _clientRepository = clientRepository;
         }
 
         public IActionResult Login()
@@ -66,7 +71,7 @@ namespace CompanhiaAguasWebMVC.Controllers
             var list = _roleManager.Roles.Select(c => new SelectListItem
             {
                 Text = c.Name,
-                Value = c.Id
+                Value = c.Id.ToString()
             }).OrderBy(l => l.Text).ToList();
 
 
@@ -108,9 +113,32 @@ namespace CompanhiaAguasWebMVC.Controllers
                         return View(model);
                     }
 
+
+                    var role = await _roleManager.FindByIdAsync(model.RoleName);
+
+                    if(role.Name == "Customer")
+                    {
+                        Client client = new Client
+                        {
+                            FirstName = model.FirstName,
+                            LastName = model.LastName,
+                            Email = model.Username,
+                            Address = "Falta Info",
+                            Age = 18,
+                            CitizenCard = 123,
+                            FiscalNumber = 123,
+                            IsActive = false
+                            
+                        };
+
+                        await _clientRepository.CreateAsync(client);
+                    }
+
+                    await _userHelper.AddUserToRoleAsync(user, role.Name);
+
                     ViewBag.Message = "Utilizador criado com sucesso";
 
-                    return View();
+                    return RedirectToAction("Index","Users");
 
 
 
