@@ -45,8 +45,17 @@ namespace CompanhiaAguasWebMVC
             services.AddTransient<SeedDb>();
             services.AddScoped<IUserHelper, UserHelper>();
             services.AddScoped<IClientRepository, ClientRepository>();
-            services.AddScoped<IImageHelper, ImageHelper>();
+            services.AddScoped<IConsumptionRepository, ConsumptionRepository>();
+            services.AddScoped<IInvoiceRepository, InvoiceRepository>();
 
+
+
+            services.AddScoped<IImageHelper, ImageHelper>();
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Account/NotAuthorized";
+                options.AccessDeniedPath = "/Account/NotAuthorized";
+            });
 
             services.AddControllersWithViews();
         }
@@ -54,6 +63,10 @@ namespace CompanhiaAguasWebMVC
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NTE2NjAwQDMxMzkyZTMzMmUzMEh0emlMcEtDNXB6YWpYK0JRVDhrMGF2cm5ZdW56bmhBeXR0V3RzMkFiUHM9");
+
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -64,6 +77,9 @@ namespace CompanhiaAguasWebMVC
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseStatusCodePagesWithReExecute("/error/{0}");
+
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

@@ -12,6 +12,10 @@ namespace CompanhiaAguasWebMVC.Data
     {
         public DbSet<Client> Clients { get; set; }
 
+        public DbSet<Consumption> Consumptions { get; set; }
+
+        public DbSet<Invoice> Invoices { get; set; }
+
 
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)

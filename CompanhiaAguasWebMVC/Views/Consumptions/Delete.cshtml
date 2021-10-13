@@ -1,0 +1,46 @@
+﻿@model CompanhiaAguasWebMVC.Data.Entities.Consumption
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Apagar</h1>
+
+<h3>Tem a certeza que deseja apagar este consumo?</h3>
+<div>
+    <h4>Consumo</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ClientId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ClientId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DateTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DateTime)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Quantity)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Quantity)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TotalToBill)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TotalToBill)
+        </dd>
+        
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" />
+        <a asp-action="Index" class="btn btn-success">Voltar à lista de consumos</a>
+    </form>
+</div>

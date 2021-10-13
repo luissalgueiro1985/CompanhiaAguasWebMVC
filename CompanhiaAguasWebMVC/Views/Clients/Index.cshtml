@@ -6,6 +6,34 @@
 
 <h1>Lista de Clientes</h1>
 
+<div style="margin:50px 0 50px 0">
+<ejs-grid id="Grid" dataSource=Model allowPaging="true" allowSorting="true" allowFiltering="true" toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update" })">
+    <e-grid-pagesettings pageSize="5"></e-grid-pagesettings>
+    <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" mode="Normal"></e-grid-editSettings>
+    <e-grid-columns>
+        <e-grid-column field="FirstName" headerText="Primeiro Nome" textAlign="Right" width="100"></e-grid-column>
+        <e-grid-column field="LastName" headerText="Ultimo Nome" width="100"></e-grid-column>
+        <e-grid-column field="MidlleName" headerText="Outros Nomes" width="100"></e-grid-column>
+        <e-grid-column field="Address" headerText="Morada" width="120"></e-grid-column>
+        <e-grid-column field="Age" headerText="Idade" width="30"></e-grid-column>
+        <e-grid-column field="CitizenCard" headerText="Cartão de Cidadão" width="60"></e-grid-column>
+        <e-grid-column field="FiscalNumber" headerText="NIF" width="60"></e-grid-column>
+        <e-grid-column field="Email" headerText="Email" width="100"></e-grid-column>
+        <e-grid-column field="" headerText="Actions" width="100"></e-grid-column>
+
+
+    </e-grid-columns>
+</ejs-grid>
+
+</div>
+
+
+
+
+
+
+
+
 <p>
     <a asp-action="Create" class="btn btn-primary">Criar Novo Cliente</a>
 </p>
@@ -43,41 +71,42 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MidlleName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Age)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CitizenCard)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FiscalNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsActive)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td style="display: grid; grid-auto-flow: column; grid-column-gap: 10px">
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Editar</a> 
-                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Detalhes</a> 
-                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Apagar</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MidlleName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Age)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CitizenCard)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FiscalNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsActive)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td style="display: grid; grid-auto-flow: column; grid-column-gap: 10px">
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Editar</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Detalhes</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Apagar</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CompanhiaAguasWebMVC.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin,Employee")]
     public class ClientsController : Controller
     {
         private readonly IClientRepository _clientRepository;
@@ -33,19 +33,22 @@ namespace CompanhiaAguasWebMVC.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("ClientNotFound");
             }
 
             var client = await _clientRepository.GetByIdAsync(id.Value);
             if (client == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("ClientNotFound");
+
             }
 
             return View(client);
         }
 
+
         // GET: Clients/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -69,17 +72,21 @@ namespace CompanhiaAguasWebMVC.Controllers
         }
 
         // GET: Clients/Edit/5
+
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("ClientNotFound");
+
             }
 
             var client = await _clientRepository.GetByIdAsync(id.Value);
             if (client == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("ClientNotFound");
+
             }
             return View(client);
         }
@@ -93,7 +100,8 @@ namespace CompanhiaAguasWebMVC.Controllers
         {
             if (id != client.Id)
             {
-                return NotFound();
+                return new NotFoundViewResult("ClientNotFound");
+
             }
 
             if (ModelState.IsValid)
@@ -108,7 +116,8 @@ namespace CompanhiaAguasWebMVC.Controllers
                 {
                     if (!await _clientRepository.ExistAsync(client.Id))
                     {
-                        return NotFound();
+                        return new NotFoundViewResult("ClientNotFound");
+
                     }
                     else
                     {
@@ -121,17 +130,21 @@ namespace CompanhiaAguasWebMVC.Controllers
         }
 
         // GET: Clients/Delete/5
+
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("ClientNotFound");
+
             }
 
             var client = await _clientRepository.GetByIdAsync(id.Value);
             if (client == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("ClientNotFound");
+
             }
 
             return View(client);
@@ -151,6 +164,11 @@ namespace CompanhiaAguasWebMVC.Controllers
         public IActionResult GetClients()
         {
             return Ok(_clientRepository.GetAllWithUsers());
+        }
+
+        public IActionResult ClientNotFound()
+        {
+            return View();
         }
 
     }

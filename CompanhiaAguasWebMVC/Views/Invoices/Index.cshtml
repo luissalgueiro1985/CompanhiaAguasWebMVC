@@ -1,0 +1,102 @@
+﻿@model IEnumerable<CompanhiaAguasWebMVC.Data.Entities.Invoice>
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css" />
+
+<h1>Lista de Faturas</h1>
+
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"></h3>
+            </div>
+            <div class="panel-body table-responsive">
+                <table class="table table-hover table-striped" id="MyTable">
+                    <thead style="width:100%">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Id)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Client)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Consumption)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.DateTime)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.SubTotal)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Tax)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Total)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.IsPaid)
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Client.FullName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Consumption.Quantity)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DateTime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SubTotal)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Tax)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Total)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IsPaid)
+                            </td>
+
+
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="far fa-edit"></i></a>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#MyTable').DataTable();
+        });
+    </script>
+}
+

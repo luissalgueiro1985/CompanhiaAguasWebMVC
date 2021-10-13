@@ -23,7 +23,17 @@ namespace CompanhiaAguasWebMVC.Controllers
             return View();
         }
 
+        public IActionResult About()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        public IActionResult Contact()
         {
             return View();
         }
@@ -32,6 +42,12 @@ namespace CompanhiaAguasWebMVC.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [Route("error/404")]
+        public IActionResult Error404()
+        {
+            return View();
         }
     }
 }

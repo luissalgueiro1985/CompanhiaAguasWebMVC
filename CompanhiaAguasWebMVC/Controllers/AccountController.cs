@@ -1,8 +1,10 @@
 ﻿using CompanhiaAguasWebMVC.Data.Entities;
 using CompanhiaAguasWebMVC.Helpers;
 using CompanhiaAguasWebMVC.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +15,13 @@ namespace CompanhiaAguasWebMVC.Controllers
     public class AccountController : Controller
     {
         private readonly IUserHelper _userHelper;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AccountController(IUserHelper userHelper)
+        public AccountController(IUserHelper userHelper,
+            RoleManager<IdentityRole> roleManager)
         {
             _userHelper = userHelper;
+            _roleManager = roleManager;
         }
 
         public IActionResult Login()
@@ -55,10 +60,24 @@ namespace CompanhiaAguasWebMVC.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-
+        [Authorize(Roles = "Admin")]
         public IActionResult Register()
         {
-            return View();
+            var list = _roleManager.Roles.Select(c => new SelectListItem
+            {
+                Text = c.Name,
+                Value = c.Id
+            }).OrderBy(l => l.Text).ToList();
+
+
+
+            var model = new RegisterNewUserViewModel
+            {
+                Roles = list
+            };
+
+
+            return View(model);
         }
 
 
@@ -78,7 +97,7 @@ namespace CompanhiaAguasWebMVC.Controllers
                         LastName = model.LastName,
                         Email = model.Username,
                         UserName = model.Username,
-                        
+                        PhoneNumber = model.PhoneNumber
 
                     };
 
@@ -89,19 +108,10 @@ namespace CompanhiaAguasWebMVC.Controllers
                         return View(model);
                     }
 
-                    var loginViewModel = new LoginViewModel
-                    {
-                        Password = model.Password,
-                        RememberMe = false,
-                        Username = model.Username
-                    };
+                    ViewBag.Message = "Utilizador criado com sucesso";
 
-                    var result2 = await _userHelper.LoginAsync(loginViewModel);
-                    if (result2.Succeeded)
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
-                        
+                    return View();
+
 
 
                     /*string myToken = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
@@ -121,7 +131,7 @@ namespace CompanhiaAguasWebMVC.Controllers
                         return View(model);
                     }*/
 
-                    ModelState.AddModelError(string.Empty, "The user couldn´t be logged.");
+                    /*ModelState.AddModelError(string.Empty, "The user couldn´t be logged.");*/
                 }
 
             }
@@ -202,6 +212,11 @@ namespace CompanhiaAguasWebMVC.Controllers
             }
 
             return this.View(model);
+        }
+
+        public IActionResult NotAuthorized()
+        {
+            return View();
         }
     }
 }

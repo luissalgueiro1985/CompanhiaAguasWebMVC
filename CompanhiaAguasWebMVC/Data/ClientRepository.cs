@@ -1,5 +1,7 @@
 ﻿using CompanhiaAguasWebMVC.Data.Entities;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CompanhiaAguasWebMVC.Data
@@ -16,6 +18,20 @@ namespace CompanhiaAguasWebMVC.Data
         public IQueryable GetAllWithUsers()
         {
             return _context.Clients.Include(p => p.User);
+        }
+
+        public IEnumerable<SelectListItem> GetComboClients()
+        {
+            var list = _context.Clients.Select(c => new SelectListItem
+            {
+                Text = c.FirstName,
+                Value = c.Id.ToString()
+
+            }).OrderBy(l => l.Text).ToList();
+
+            
+
+            return list;
         }
     }
 }

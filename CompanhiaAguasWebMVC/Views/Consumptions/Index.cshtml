@@ -1,0 +1,57 @@
+﻿@model IEnumerable<CompanhiaAguasWebMVC.Data.Entities.Consumption>
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Adicionar novo consumo</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ClientId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalToBill)
+            </th>
+            
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ClientId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalToBill)
+                </td>
+                
+                <td style="display: grid; grid-auto-flow: column; grid-column-gap: 10px">
+                    <a asp-action="Edit" asp-route-id="@item.Id"  style="width: 100px; margin: 0px" class="btn btn-warning"><i class="far fa-edit"></i>Editar</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" style="width: 100px; margin: 0px" class="btn btn-danger"><i class="far fa-trash-alt"></i>Apagar</a>
+                    <a asp-action="GenerateInvoice" asp-route-id="@item.Id" style="width:150px;margin:0px" class="btn btn-secondary"><i class="fas fa-file-invoice"></i>Gerar fatura</a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
